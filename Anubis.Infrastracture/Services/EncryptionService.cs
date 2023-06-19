@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Anubis.Application.Responses.Login;
 using Anubis.Application.Responses.Register;
 using Anubis.Domain;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Anubis.Infrastracture.Services
 {
@@ -33,6 +37,23 @@ namespace Anubis.Infrastracture.Services
             }
 
             return result;
+        }
+
+        public static LoginResponse GenerateJwtForUser(User user, string secret)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenKey = Encoding.ASCII.GetBytes(secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.UserID), new Claim(ClaimTypes.Role, user.Role) }),
+                Expires = DateTime.UtcNow.AddDays(10),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey),
+                    SecurityAlgorithms.HmacSha512Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var encryptedJWT = tokenHandler.WriteToken(token);
+
+            return new LoginResponse() { TokenJWT = encryptedJWT, UserID = user.UserID };
         }
     }
 }

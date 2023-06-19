@@ -48,12 +48,21 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = false
     };
 });
-    
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("CorsPolicy", builder =>
+        builder.WithOrigins(configuration["ApplicationSettings:AphroditeURL"])
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin());
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseFastEndpoints();
+app.UseCors("CorsPolicy");
 
 if (app.Environment.IsDevelopment())
 {

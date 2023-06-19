@@ -47,19 +47,7 @@ namespace Anubis.Infrastracture.Commands.Authentication
                 throw new Exception("Username or password was invalid");
             }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenKey = Encoding.ASCII.GetBytes(this._appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.UserID), new Claim(ClaimTypes.Role, user.Role) }),
-                Expires = DateTime.UtcNow.AddDays(10),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey),
-                    SecurityAlgorithms.HmacSha512Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var encryptedJWT = tokenHandler.WriteToken(token);
-
-            return new LoginResponse() { TokenJWT = encryptedJWT, UserID = user.UserID };
+            return EncryptionService.GenerateJwtForUser(user, this._appSettings.Secret);
         }
     }
 }

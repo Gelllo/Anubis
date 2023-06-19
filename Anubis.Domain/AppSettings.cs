@@ -9,5 +9,8 @@ namespace Anubis.Domain
     public class AppSettings
     {
         public string Secret { get; set; }
+        public string AphroditeURL { get; set; }
+        public string GoogleCloudId { get; set; }
+
     }
 }
