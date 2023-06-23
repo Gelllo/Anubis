@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Anubis.Domain
+namespace Anubis.Domain.UsersDomain
 {
     public class User
     {
@@ -20,18 +20,26 @@ namespace Anubis.Domain
         [Column("Email", TypeName = "nvarchar(200)"), Required]
         public string Email { get; set; }
 
-        [Column("PasswordSalt", TypeName = "nvarchar(MAX)"), Required]
-        public byte[] PasswordSalt { get; set; }
+        [Column("PasswordSalt", TypeName = "nvarchar(MAX)")]
+        public byte[]? PasswordSalt { get; set; }
 
-        [Column("PasswordHash", TypeName = "nvarchar(MAX)"), Required]
-        public byte[] PasswordHash { get; set; }
+        [Column("PasswordHash", TypeName = "nvarchar(MAX)")]
+        public byte[]? PasswordHash { get; set; }
 
         [Column("Role", TypeName = "nvarchar(200)"), Required]
         public string Role { get; set; }
+
+        public virtual UserRefreshToken? RefreshToken { get; set; }
     }
 
     public static class UserRoles
     {
-        public static readonly string[] roles = { "Admin" , "User" , "Medic" };
+        public static readonly string[] roles = { "ADMIN", "USER", "MEDIC" };
+
+        public static readonly string ADMIN = "ADMIN";
+
+        public static readonly string USER = "USER";
+
+        public static readonly string MEDIC = "MEDIC";
     }
 }

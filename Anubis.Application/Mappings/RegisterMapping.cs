@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Anubis.Application.Requests.Login;
 using Anubis.Application.Requests.Register;
 using Anubis.Application.Requests.Users;
-using Anubis.Domain;
+using Anubis.Domain.UsersDomain;
 using AutoMapper;
 
 namespace Anubis.Application.Mappings

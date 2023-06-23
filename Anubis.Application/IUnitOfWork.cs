@@ -11,6 +11,8 @@ namespace Anubis.Application
     {
         IUserRepository UserRepository { get; }
 
+        IUserRefreshTokenRepository UserRefreshTokenRepository { get; }
+
         void Commit();
         void Rollback();
         Task CommitAsync();

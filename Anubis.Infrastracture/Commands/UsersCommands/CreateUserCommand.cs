@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Anubis.Domain;
 using AutoMapper;
 using Anubis.Application;
 using Anubis.Application.Requests.Users;
 using Anubis.Application.Responses.Users;
+using Anubis.Domain.UsersDomain;
 
 namespace Anubis.Infrastracture.Commands.UsersCommands
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Anubis.Domain;
+using Anubis.Domain.UsersDomain;
 
 namespace Anubis.Application.Repository
 {
@@ -14,6 +14,8 @@ namespace Anubis.Application.Repository
         Task<IEnumerable<User>> GetUsersAsync();
         Task<User> GetUserByID(int userId);
         Task<User> GetUserByUserId(string userId);
+        Task<User> GetUserByToken(string token);
+        Task<User> GetUserByEmail(string email);
         Task<int> InsertUserAsync(User user);
         void DeleteUser(int userId);
         Task<User> UpdateUserAsync(User user);

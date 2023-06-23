@@ -8,8 +8,14 @@ namespace Anubis.Application.Responses.Login
 {
     public record LoginResponse
     {
-        public string TokenJWT { get; set; }
-
         public string UserID { get; set; }
+
+        public string Role { get; set; }
+
+        public string LastName { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string Email { get; set; }
     }
 }

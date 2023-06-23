@@ -11,6 +11,8 @@ namespace Anubis.Domain
         public string Secret { get; set; }
         public string AphroditeURL { get; set; }
         public string GoogleCloudId { get; set; }
+        public string FacebookAppId { get; set; }
+        public string FacebookAppSecret { get; set; }
 
     }
 }

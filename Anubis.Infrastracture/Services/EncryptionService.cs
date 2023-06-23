@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Anubis.Application.Responses.Login;
 using Anubis.Application.Responses.Register;
-using Anubis.Domain;
+using Anubis.Domain.UsersDomain;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Anubis.Infrastracture.Services
@@ -39,7 +41,7 @@ namespace Anubis.Infrastracture.Services
             return result;
         }
 
-        public static LoginResponse GenerateJwtForUser(User user, string secret)
+        public static string GenerateJwtForUser(User user, string secret)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.ASCII.GetBytes(secret);
@@ -53,7 +55,7 @@ namespace Anubis.Infrastracture.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var encryptedJWT = tokenHandler.WriteToken(token);
 
-            return new LoginResponse() { TokenJWT = encryptedJWT, UserID = user.UserID };
+            return encryptedJWT;
         }
     }
 }

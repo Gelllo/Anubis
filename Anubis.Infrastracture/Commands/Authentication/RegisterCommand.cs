@@ -7,6 +7,7 @@ using Anubis.Application;
 using Anubis.Application.Requests.Register;
 using Anubis.Application.Responses.Register;
 using Anubis.Domain;
+using Anubis.Domain.UsersDomain;
 using Anubis.Infrastracture.Services;
 using AutoMapper;
 using Microsoft.Extensions.Options;

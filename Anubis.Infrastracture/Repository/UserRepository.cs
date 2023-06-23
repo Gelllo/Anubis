@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using Anubis.Domain;
 using Anubis.Application.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using Anubis.Domain.UsersDomain;
 
 namespace Anubis.Infrastracture.Repository
 {
@@ -33,7 +35,18 @@ namespace Anubis.Infrastracture.Repository
 
         public async Task<User> GetUserByUserId(string userId)
         {
-            return await _dbContext.Users.Where(x => x.UserID == userId).FirstOrDefaultAsync();
+            var user = await _dbContext.Users.Where(x => x.UserID == userId).Include(y=>y.RefreshToken).FirstOrDefaultAsync();
+            return user;
+        }
+
+        public async Task<User> GetUserByToken(string token)
+        {
+            return await _dbContext.Users.Where(x => x.RefreshToken.Token == token).FirstOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            return await _dbContext.Users.Where(x => x.Email == email).FirstOrDefaultAsync();
         }
 
         public async Task<int> InsertUserAsync(User user)

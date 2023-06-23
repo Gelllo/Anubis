@@ -4,7 +4,9 @@ using FastEndpoints.Swagger;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Text;
+using Anubis.Application.Services;
 using Anubis.Domain;
+using Anubis.Infrastracture.Services;
 using Anubis.Web.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -31,11 +33,18 @@ builder.Services.ConfigureHandlers();
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ApplicationSettings"));
 
+builder.Services.AddScoped<IWebSecurityService, WebSecurityService>();
+builder.Services.AddHttpClient();
+
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
+}).AddCookie(x=>
+    {
+        x.Cookie.Name = "token";
+    })
+.AddJwtBearer(x =>
 {
     x.RequireHttpsMetadata = false;
     x.SaveToken = false;
@@ -47,15 +56,23 @@ builder.Services.AddAuthentication(x =>
         ValidateIssuer = false,
         ValidateAudience = false
     };
+    x.Events = new JwtBearerEvents()
+    {
+        OnMessageReceived = context =>
+        {
+            context.Token = context.Request.Cookies["X-Access-Token"];
+            return Task.CompletedTask;
+        }
+    };
 });
 
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("CorsPolicy", builder =>
-        builder.WithOrigins(configuration["ApplicationSettings:AphroditeURL"])
+        builder.WithOrigins("https://localhost:4200", "http://localhost:4200")
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowAnyOrigin());
+            .AllowCredentials());
 });
 
 var app = builder.Build();

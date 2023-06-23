@@ -13,6 +13,7 @@ namespace Anubis.Infrastracture
     {
         private readonly DataContext _dbContext;
         private IUserRepository _userRepository;
+        private IUserRefreshTokenRepository _userRefreshTokenRepository;
 
         public UnitOfWork(DataContext dbContext)
         {
@@ -22,6 +23,11 @@ namespace Anubis.Infrastracture
         public IUserRepository UserRepository
         {
             get { return _userRepository = _userRepository ?? new UserRepository(_dbContext); }
+        }
+
+        public IUserRefreshTokenRepository UserRefreshTokenRepository
+        {
+            get { return _userRefreshTokenRepository = _userRefreshTokenRepository ?? new UserRefreshTokenRepository(_dbContext); }
         }
 
         public void Commit()

@@ -12,9 +12,11 @@ using System.Threading.Tasks;
 using Anubis.Application.Requests.Login;
 using Anubis.Application.Responses.Login;
 using Anubis.Infrastracture.Services;
+using Anubis.Web.Shared;
 using AutoMapper;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Http;
 
 namespace Anubis.Infrastracture.Commands.Authentication
 {
@@ -37,17 +39,24 @@ namespace Anubis.Infrastracture.Commands.Authentication
 
             if (user == null)
             {
-                throw new Exception("User does not exit in the database for the login");
+                throw new Exception(ErrorMessages.INVALID_CREDENTIALS);
             }
 
             var match = EncryptionService.CheckPasswordForUser(user, command.Password);
 
             if (!match)
             {
-                throw new Exception("Username or password was invalid");
+                throw new Exception(ErrorMessages.INVALID_CREDENTIALS);
             }
 
-            return EncryptionService.GenerateJwtForUser(user, this._appSettings.Secret);
+            return new LoginResponse()
+            {
+                UserID = user.UserID,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = user.Role,
+                Email = user.Email
+            };
         }
     }
 }

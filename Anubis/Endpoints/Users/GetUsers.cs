@@ -20,7 +20,7 @@ namespace Anubis.Web.Endpoints.Users
         public override void Configure()
         {
             Get("/users/");
-            Roles("Admin");
+            Roles("ADMIN");
         }
 
         public override async Task HandleAsync(GetUsersRequest r, CancellationToken c)

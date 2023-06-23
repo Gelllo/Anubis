@@ -10,7 +10,7 @@ namespace Anubis.Web.Configuration
         public static WebApplicationBuilder ConfigureDatabase(this WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<DataContext>(x =>
-                x.UseSqlServer(builder.Configuration.GetConnectionString("AnubisConnection")));
+                x.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("AnubisConnection")));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<ICommandDispatcher, CommandDispatcher>();
             builder.Services.AddScoped<IQueryDispatcher, QueryDispatcher>();

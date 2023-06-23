@@ -1,6 +1,6 @@
 ﻿using Anubis.Application.Requests.Users;
 using Anubis.Application.Responses.Users;
-using Anubis.Domain;
+using Anubis.Domain.UsersDomain;
 using AutoMapper;
 
 namespace Anubis.Application.UserMappings
@@ -43,6 +43,8 @@ namespace Anubis.Application.UserMappings
                     }));
 
             CreateMap<DeleteUserRequest, int>();
+
+            CreateMap<User,UserDTO>().ReverseMap();
         }
     }
 }

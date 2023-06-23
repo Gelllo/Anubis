@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Anubis.Domain;
+using Anubis.Domain.UsersDomain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
@@ -12,10 +12,13 @@ namespace Anubis.Infrastracture
 {
     public class DataContext : DbContext
     {
-        public DataContext() { }
+        public DataContext()
+        {
+            ChangeTracker.LazyLoadingEnabled = true;
+        }
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<User> Users { get; set; }
-
+        public DbSet<UserRefreshToken> RefreshTokens { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,6 +36,15 @@ namespace Anubis.Infrastracture
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<User>().HasKey(u => u.Id);
             modelBuilder.Entity<User>().HasAlternateKey(u => u.UserID);
+
+            modelBuilder.Entity<UserRefreshToken>().ToTable("UserRefreshTokens").HasKey(x => x.UserID);
+
+
+            modelBuilder.Entity<User>().HasOne(x => x.RefreshToken)
+                .WithOne(x => x.User)
+                .HasPrincipalKey<User>(e=>e.UserID)
+                .HasForeignKey<UserRefreshToken>(e => e.UserID)
+                .IsRequired();
         }
     }
 }

@@ -7,6 +7,9 @@ using Anubis.Infrastracture.Services;
 using AutoMapper;
 using Google.Apis.Auth;
 using Microsoft.Extensions.Options;
+using Anubis.Domain.UsersDomain;
+using Anubis.Web.Shared;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 public class GoogleLoginCommand : ICommandHandler<GoogleLoginRequest, LoginResponse>
 {
@@ -21,22 +24,53 @@ public class GoogleLoginCommand : ICommandHandler<GoogleLoginRequest, LoginRespo
         _appSettings = appSettings.Value;
     }
 
-    public async Task<LoginResponse> Handle(GoogleLoginRequest command, CancellationToken cancellation)
+    public async Task<LoginResponse> Handle(GoogleLoginRequest req, CancellationToken cancellation)
     {
         var settings = new GoogleJsonWebSignature.ValidationSettings()
         {
             Audience = new List<string> { this._appSettings.GoogleCloudId }
         };
 
-        var payload = await GoogleJsonWebSignature.ValidateAsync(command.Credentials, settings);
+        var payload = await GoogleJsonWebSignature.ValidateAsync(req.Credentials, settings);
 
-        var user = await _unitOfWork.UserRepository.GetUserByUserId(payload.Name);
+        var user = await _unitOfWork.UserRepository.GetUserByUserId(payload.Subject);
 
-        if (user == null)
+        if (user == null && req.UserIsRegistered)
         {
-            throw new Exception("User does not exit in the database for the login");
+            throw new Exception(ErrorMessages.INVALID_GOOGLE);
         }
+        else if (user == null && !req.UserIsRegistered)
+        {
+            user = new User()
+            {
+                UserID = payload.Subject,
+                Email = payload.Email,
+                FirstName = payload.FamilyName,
+                LastName = payload.GivenName,
+                Role = UserRoles.USER
+            };
 
-        return EncryptionService.GenerateJwtForUser(user, this._appSettings.Secret);
+            await _unitOfWork.UserRepository.InsertUserAsync(user);
+
+            return new LoginResponse()
+            {
+                UserID = user.UserID,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = user.Role,
+                Email = user.Email
+            };
+        }
+        else
+        {
+            return new LoginResponse()
+            {
+                UserID = user.UserID,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = user.Role,
+                Email = user.Email
+            };
+        }
     }
 }

@@ -9,5 +9,7 @@ namespace Anubis.Application.Requests.ExternalLogin
     public record GoogleLoginRequest
     {
         public string Credentials { get; set; }
+
+        public bool UserIsRegistered { get; set; }
     }
 }
