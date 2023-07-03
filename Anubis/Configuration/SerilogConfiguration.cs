@@ -37,7 +37,7 @@ namespace Anubis.Web.Configuration
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.MSSqlServer(
-                    connectionString: builder.Configuration.GetConnectionString("SerilogConnection"),
+                    connectionString: builder.Configuration.GetConnectionString("ExceptionalConnection"),
                     sinkOptions: sinkOpts,
                     columnOptions: columnOptions
                 )

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Anubis.Application;
-using Anubis.Infrastracture;
+using Anubis.Infrastructure;
 
 namespace Anubis.Web.Configuration
 {
@@ -10,7 +10,7 @@ namespace Anubis.Web.Configuration
         {
             services.Scan(selector =>
             {
-                selector.FromAssemblyDependencies(Assembly.GetAssembly(typeof(DataContext)))
+                selector.FromAssemblyDependencies(Assembly.GetAssembly(typeof(AnubisContext)))
                     .AddClasses(filter =>
                     {
                         filter.AssignableTo(typeof(IQueryHandler<,>));
@@ -21,7 +21,7 @@ namespace Anubis.Web.Configuration
 
             services.Scan(selector =>
             {
-                selector.FromAssemblyDependencies(Assembly.GetAssembly(typeof(DataContext)))
+                selector.FromAssemblyDependencies(Assembly.GetAssembly(typeof(AnubisContext)))
                     .AddClasses(filter =>
                     {
                         filter.AssignableTo(typeof(Anubis.Application.ICommandHandler<,>));

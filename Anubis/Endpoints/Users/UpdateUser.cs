@@ -2,6 +2,7 @@
 using Anubis.Application.Requests.Users;
 using Anubis.Application.Responses.Users;
 using Anubis.Application;
+using Google.Apis.Requests;
 
 namespace Anubis.Web.Endpoints.Users
 {
@@ -19,11 +20,12 @@ namespace Anubis.Web.Endpoints.Users
         public override void Configure()
         {
             Put("/users/");
-            Roles("Admin");
+            Roles("ADMIN");
         }
 
         public override async Task HandleAsync(UpdateUserRequest req, CancellationToken ct)
         {
+
             await SendAsync(await _dispatcher.Dispatch<UpdateUserRequest, UpdateUserResponse>(req, ct));
         }
     }

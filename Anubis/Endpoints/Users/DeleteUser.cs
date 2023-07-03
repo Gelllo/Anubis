@@ -5,7 +5,7 @@ using Anubis.Application;
 
 namespace Anubis.Web.Endpoints.Users
 {
-    public class DeleteUser : Endpoint<DeleteUserRequest, DeleteUserResponse>
+    public class DeleteUser : EndpointWithoutRequest
     {
         private ICommandDispatcher _dispatcher;
         private ILogger _logger;
@@ -18,12 +18,13 @@ namespace Anubis.Web.Endpoints.Users
 
         public override void Configure()
         {
-            Delete("/users/");
-            Roles("Admin");
+            Delete("/users/{ID}");
+            Roles("ADMIN");
         }
 
-        public override async Task HandleAsync(DeleteUserRequest req, CancellationToken ct)
+        public override async Task HandleAsync( CancellationToken ct)
         {
+            var req = new DeleteUserRequest() { Id = Route<int>("ID") };
             await SendAsync(await _dispatcher.Dispatch<DeleteUserRequest, DeleteUserResponse>(req, ct));
         }
     }

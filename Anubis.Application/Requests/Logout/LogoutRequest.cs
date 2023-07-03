@@ -8,6 +8,6 @@ namespace Anubis.Application.Requests.Logout
 {
     public record LogoutRequest
     {
-        public string UserID { get; set; }
+        public string? UserID { get; set; }
     }
 }

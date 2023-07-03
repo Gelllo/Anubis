@@ -2,6 +2,7 @@
 using Anubis.Application.Responses.Login;
 using Anubis.Application.Services;
 using Anubis.Application;
+using Anubis.Infrastructure;
 using FastEndpoints;
 using Newtonsoft.Json;
 
@@ -12,10 +13,10 @@ namespace Anubis.Web.Endpoints.Authentication
         private ICommandDispatcher _dispatcher;
         private ILogger _logger;
         private IWebSecurityService _webSecurityService;
-        private IUnitOfWork _unitOfWork;
+        private IAnubisUnitOfWork<AnubisContext> _unitOfWork;
         private readonly HttpClient _httpClient;
 
-        public FacebookLogin(ICommandDispatcher dispatcher, ILogger logger, IWebSecurityService webSecurityService, IUnitOfWork unitOfWork, HttpClient httpClient)
+        public FacebookLogin(ICommandDispatcher dispatcher, ILogger logger, IWebSecurityService webSecurityService, IAnubisUnitOfWork<AnubisContext> unitOfWork, HttpClient httpClient)
         {
             _dispatcher = dispatcher;
             _logger = logger;

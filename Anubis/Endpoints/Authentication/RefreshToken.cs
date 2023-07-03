@@ -4,11 +4,12 @@ using Anubis.Application;
 using Anubis.Application.Requests.Token;
 using Anubis.Application.Responses.Token;
 using Anubis.Application.Services;
-using Anubis.Infrastracture.Services;
+using Anubis.Infrastructure.Services;
 using Anubis.Web.Shared;
 using Azure.Core;
 using FastEndpoints;
 using Anubis.Domain;
+using Anubis.Infrastructure;
 using Microsoft.Extensions.Options;
 
 namespace Anubis.Web.Endpoints.Authentication
@@ -16,11 +17,11 @@ namespace Anubis.Web.Endpoints.Authentication
     public class RefreshToken : Endpoint<RefreshTokenRequest, RefreshTokenResponse>
     {
         private readonly ILogger _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAnubisUnitOfWork<AnubisContext> _unitOfWork;
         private readonly AppSettings _appSettings;
         private readonly IWebSecurityService _webSecurityService;
 
-        public RefreshToken(ILogger logger, IUnitOfWork unitOfWork, IOptions<AppSettings> appSettings, IWebSecurityService webSecurityService)
+        public RefreshToken(ILogger logger, IAnubisUnitOfWork<AnubisContext> unitOfWork, IOptions<AppSettings> appSettings, IWebSecurityService webSecurityService)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;

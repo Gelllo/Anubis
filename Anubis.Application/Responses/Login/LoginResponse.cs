@@ -8,7 +8,7 @@ namespace Anubis.Application.Responses.Login
 {
     public record LoginResponse
     {
-        public string UserID { get; set; }
+        public string? UserID { get; set; }
 
         public string Role { get; set; }
 

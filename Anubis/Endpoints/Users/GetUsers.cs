@@ -3,11 +3,12 @@ using Anubis.Application;
 using Anubis.Application.Requests.Users;
 using Anubis.Application.Responses.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Anubis.Application.Requests.ApplicationExceptions;
 
 namespace Anubis.Web.Endpoints.Users
 {
 
-    public class GetUsers : Endpoint<GetUsersRequest, GetUsersResponse>
+    public class GetUsers : EndpointWithoutRequest
     {
         private readonly IQueryDispatcher _dispatcher;
         private ILogger _logger;
@@ -23,9 +24,16 @@ namespace Anubis.Web.Endpoints.Users
             Roles("ADMIN");
         }
 
-        public override async Task HandleAsync(GetUsersRequest r, CancellationToken c)
-        { 
-            await SendAsync(await _dispatcher.Dispatch<GetUsersRequest, GetUsersResponse>(r, c));
+        public override async Task HandleAsync(CancellationToken c)
+        {
+            var req = new GetUsersRequest()
+            {
+                order = Query<string>("order"),
+                sort = Query<string>("sort"),
+                page = Query<int>("page")
+            };
+
+            await SendAsync(await _dispatcher.Dispatch<GetUsersRequest, GetUsersResponse>(req, c));
         }
     }
 }

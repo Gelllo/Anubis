@@ -6,7 +6,7 @@ using System.Data;
 using System.Text;
 using Anubis.Application.Services;
 using Anubis.Domain;
-using Anubis.Infrastracture.Services;
+using Anubis.Infrastructure.Services;
 using Anubis.Web.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

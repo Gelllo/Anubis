@@ -26,7 +26,6 @@ namespace Anubis.Application.UserMappings
                     }));
 
             CreateMap<UpdateUserRequest, User>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.UserID, opt => opt.MapFrom(src => src.UserID))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
@@ -42,9 +41,19 @@ namespace Anubis.Application.UserMappings
                         Id = src.Id
                     }));
 
-            CreateMap<DeleteUserRequest, int>();
+            CreateMap<DeleteUserRequest, int>().ReverseMap();
 
             CreateMap<User,UserDTO>().ReverseMap();
+
+            CreateMap<GetUsersResponse,User>().ReverseMap();
+
+            CreateMap<GetMyPatientsResponse, User>().ReverseMap();
+
+            CreateMap<UpdateMyProfileResponse, User>().ReverseMap();
+
+
+
+
         }
     }
 }

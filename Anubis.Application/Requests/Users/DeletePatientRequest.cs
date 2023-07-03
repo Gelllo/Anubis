@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Anubis.Application.Requests.Users
+{
+    public record DeletePatientRequest
+    {
+        public string PatientID { get; set; }
+        public string MedicID { get; set; }
+    }
+}

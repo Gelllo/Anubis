@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 
 namespace Anubis.Domain.UsersDomain
 {
@@ -29,7 +30,17 @@ namespace Anubis.Domain.UsersDomain
         [Column("Role", TypeName = "nvarchar(200)"), Required]
         public string Role { get; set; }
 
+        [Column("PasswordResetToken", TypeName = "nvarchar(200)")]
+        public string? PasswordResetToken { get; set; }
+        
+        [Column("ResetTokenExpires", TypeName = "DateTime")]
+        public DateTime? ResetTokenExpires { get; set; }
+
         public virtual UserRefreshToken? RefreshToken { get; set; }
+
+        public virtual ICollection<User>? Patients { get; set; }
+
+        public virtual ICollection<User>? Medics { get; set; }
     }
 
     public static class UserRoles

@@ -6,8 +6,8 @@ using Anubis.Application.Responses.Login;
 using Anubis.Application.Responses.Register;
 using Anubis.Application.Services;
 using Anubis.Domain;
-using Anubis.Infrastracture.Services;
-using Anubis.Infrastracture;
+using Anubis.Infrastructure.Services;
+using Anubis.Infrastructure;
 using Anubis.Web.Shared;
 using FastEndpoints;
 using Microsoft.Extensions.Options;
@@ -19,9 +19,9 @@ namespace Anubis.Web.Endpoints.Authentication
         private ICommandDispatcher _dispatcher;
         private ILogger _logger;
         private IWebSecurityService _webSecurityService;
-        private IUnitOfWork _unitOfWork;
+        private IAnubisUnitOfWork<AnubisContext> _unitOfWork;
 
-        public GoogleLogin(ICommandDispatcher dispatcher, ILogger logger, IWebSecurityService webSecurityService, IUnitOfWork unitOfWork)
+        public GoogleLogin(ICommandDispatcher dispatcher, ILogger logger, IWebSecurityService webSecurityService, IAnubisUnitOfWork<AnubisContext> unitOfWork)
         {
             _dispatcher = dispatcher;
             _logger = logger;
