@@ -83,6 +83,11 @@ namespace Anubis.Infrastructure.Repository
             return await queryable.Skip((page ?? 0) * 30).Take(30).ToListAsync();
         }
 
+        public Task<int> GetUsersCount()
+        {
+            return Task.FromResult(_dbContext.Users.Count());
+        }
+
         public async Task<IEnumerable<User>> GetPatientsForMedic(string medicID)
         {
             var medic = await GetUserByUserId(medicID);

@@ -24,13 +24,21 @@ namespace Anubis.Web.Endpoints.Users
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var req = new DeletePatientRequest()
+            try
             {
-                MedicID = Route<string>("MedicID"),
-                PatientID = Route<string>("PatientID")
-            };
+                var req = new DeletePatientRequest()
+                {
+                    MedicID = Route<string>("MedicID"),
+                    PatientID = Route<string>("PatientID")
+                };
 
-            await SendAsync(await _dispatcher.Dispatch<DeletePatientRequest, DeletePatientResponse>(req, ct));
+                await SendAsync(await _dispatcher.Dispatch<DeletePatientRequest, DeletePatientResponse>(req, ct));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+            }
         }
     }
 }

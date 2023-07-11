@@ -26,14 +26,21 @@ namespace Anubis.Web.Endpoints.Users
 
         public override async Task HandleAsync(CancellationToken c)
         {
-            var req = new GetUsersRequest()
+            try
             {
-                order = Query<string>("order"),
-                sort = Query<string>("sort"),
-                page = Query<int>("page")
-            };
+                var req = new GetUsersRequest()
+                {
+                    order = Query<string>("order"),
+                    sort = Query<string>("sort"),
+                    page = Query<int>("page")
+                };
 
-            await SendAsync(await _dispatcher.Dispatch<GetUsersRequest, GetUsersResponse>(req, c));
+                await SendAsync(await _dispatcher.Dispatch<GetUsersRequest, GetUsersResponse>(req, c));
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+            }
         }
     }
 }

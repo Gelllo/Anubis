@@ -26,7 +26,8 @@ namespace Anubis.Infrastructure.Queries.UsersQueries
         public async Task<GetUsersResponse> Handle(GetUsersRequest query, CancellationToken cancellation)
         {
             var users = await _unitOfWork.UserRepository.GetUsersAsync(query.sort, query.order, query.page);
-            return new GetUsersResponse(){UsersList = _mapper.Map<IEnumerable<UserDTO>>(users) };
+            var usersCount = await _unitOfWork.UserRepository.GetUsersCount();
+            return new GetUsersResponse(){UsersList = _mapper.Map<IEnumerable<UserDTO>>(users), TotalCount = usersCount};
         }
     }
 }

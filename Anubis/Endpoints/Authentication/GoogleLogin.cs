@@ -53,6 +53,7 @@ namespace Anubis.Web.Endpoints.Authentication
             }
             catch (Exception ex)
             {
+                ThrowError(ErrorMessages.INVALID_CREDENTIALS, StatusCodes.Status401Unauthorized);
                 _logger.Error(ex.Message);
             }
         }

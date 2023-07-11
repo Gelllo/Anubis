@@ -25,14 +25,22 @@ namespace Anubis.Web.Endpoints.Exceptions
 
         public override async Task HandleAsync(CancellationToken c)
         {
-            var req = new GetExceptionsRequest()
+            try
             {
-                order = Query<string>("order"),
-                sort = Query<string>("sort"),
-                page = Query<int>("page")
-            };
+                var req = new GetExceptionsRequest()
+                {
+                    order = Query<string>("order"),
+                    sort = Query<string>("sort"),
+                    page = Query<int>("page")
+                };
 
-            await SendAsync(await _dispatcher.Dispatch<GetExceptionsRequest, GetExceptionsResponse>(req, c));
+                await SendAsync(await _dispatcher.Dispatch<GetExceptionsRequest, GetExceptionsResponse>(req, c));
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+            }
+
         }
     }
 }

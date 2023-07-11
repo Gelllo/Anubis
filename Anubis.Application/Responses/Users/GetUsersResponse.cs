@@ -7,6 +7,7 @@ namespace Anubis.Application.Responses.Users
     public record GetUsersResponse
     {
         public IEnumerable<UserDTO>? UsersList { get; set; }
+        public int ? TotalCount { get; set; }
     }
 
     public record UserDTO

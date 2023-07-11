@@ -24,8 +24,16 @@ namespace Anubis.Web.Endpoints.Users
 
         public override async Task HandleAsync(AddPatientRequest req, CancellationToken ct)
         {
-            req.MedicUsername = Route<string>("MedicID");
-            await SendAsync(await _dispatcher.Dispatch<AddPatientRequest, AddPatientResponse>(req, ct));
+            try
+            {
+                req.MedicUsername = Route<string>("MedicID");
+                await SendAsync(await _dispatcher.Dispatch<AddPatientRequest, AddPatientResponse>(req, ct));
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+            }
+            
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Anubis.Application.Repository
     {
         IEnumerable<User> GetUsers();
         Task<IEnumerable<User>> GetUsersAsync(string? sort, string? order, int? page);
+        Task<int> GetUsersCount();
         Task<IEnumerable<User>> GetPatientsForMedic(string medicID);
         Task<int> AddPatient(string medicId,string patientEmail);
         Task DeletePatient(string medicId, string patientId);
@@ -18,7 +19,6 @@ namespace Anubis.Application.Repository
         Task<User> GetUserByUserId(string? userId);
         Task<User> GetUserByToken(string token);
         Task<User> GetUserByEmail(string email);
-
         Task<User> GetUserByResetToken(string resetToken);
         Task<int> InsertUserAsync(User user);
         void DeleteUser(int userId);

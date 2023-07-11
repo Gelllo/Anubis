@@ -9,7 +9,6 @@ namespace Anubis.Web.Configuration
     {
         public static WebApplicationBuilder ConfigureSerilog(this WebApplicationBuilder builder)
         {
-            Serilog.Debugging.SelfLog.Enable(msg => Console.WriteLine(msg));
 
             var sinkOpts = new MSSqlServerSinkOptions { TableName = "Exceptions", SchemaName = "dbo", AutoCreateSqlTable = true };
 

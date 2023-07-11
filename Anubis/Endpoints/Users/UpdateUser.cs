@@ -25,8 +25,14 @@ namespace Anubis.Web.Endpoints.Users
 
         public override async Task HandleAsync(UpdateUserRequest req, CancellationToken ct)
         {
-
-            await SendAsync(await _dispatcher.Dispatch<UpdateUserRequest, UpdateUserResponse>(req, ct));
+            try
+            {
+                await SendAsync(await _dispatcher.Dispatch<UpdateUserRequest, UpdateUserResponse>(req, ct));
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+            }
         }
     }
 }

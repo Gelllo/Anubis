@@ -24,8 +24,16 @@ namespace Anubis.Web.Endpoints.Users
 
         public override async Task HandleAsync( CancellationToken ct)
         {
-            var req = new DeleteUserRequest() { Id = Route<int>("ID") };
-            await SendAsync(await _dispatcher.Dispatch<DeleteUserRequest, DeleteUserResponse>(req, ct));
+            try
+            {
+                var req = new DeleteUserRequest() { Id = Route<int>("ID") };
+                await SendAsync(await _dispatcher.Dispatch<DeleteUserRequest, DeleteUserResponse>(req, ct));
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+            }
+            
         }
     }
 }

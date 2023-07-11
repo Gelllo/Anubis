@@ -37,18 +37,26 @@ namespace Anubis.Web.Endpoints.Authentication
 
         public override async Task HandleAsync(RefreshTokenRequest req, CancellationToken ct)
         {
-            var refreshToken = HttpContext.Request.Cookies["X-Refresh-Token"];
-
-            var user = await _unitOfWork.UserRepository.GetUserByToken(refreshToken);
-
-            if (user == null || user.RefreshToken.Expires < DateTime.Now)
+            try
             {
-                ThrowError(ErrorMessages.EXPIRED_TOKEN,StatusCodes.Status401Unauthorized);
+                var refreshToken = HttpContext.Request.Cookies["X-Refresh-Token"];
+
+                var user = await _unitOfWork.UserRepository.GetUserByToken(refreshToken);
+
+                if (user == null || user.RefreshToken.Expires < DateTime.Now)
+                {
+                    ThrowError(ErrorMessages.EXPIRED_TOKEN, StatusCodes.Status401Unauthorized);
+                }
+
+                this._webSecurityService.SetJWT(user, HttpContext);
+
+                await SendOkAsync();
             }
-
-            this._webSecurityService.SetJWT(user, HttpContext);
-
-            await SendOkAsync();
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+            }
+            
         }
     }
 }

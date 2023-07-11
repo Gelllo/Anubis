@@ -23,8 +23,15 @@ namespace Anubis.Web.Endpoints.Users
 
         public override async Task HandleAsync(UpdateMyProfileRequest req, CancellationToken ct)
         {
-            req.UserID = Route<string>("UserID");
-            await SendAsync(await _dispatcher.Dispatch<UpdateMyProfileRequest, UpdateMyProfileResponse>(req, ct));
+            try
+            {
+                req.UserID = Route<string>("UserID");
+                await SendAsync(await _dispatcher.Dispatch<UpdateMyProfileRequest, UpdateMyProfileResponse>(req, ct));
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+            }
         }
     }
 }

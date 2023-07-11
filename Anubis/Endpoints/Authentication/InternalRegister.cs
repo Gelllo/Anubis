@@ -3,6 +3,7 @@ using Anubis.Application.Responses.Users;
 using Anubis.Application;
 using Anubis.Application.Requests.Register;
 using Anubis.Application.Responses.Register;
+using Anubis.Web.Shared;
 using FastEndpoints;
 
 namespace Anubis.Web.Endpoints.Authentication
@@ -27,7 +28,15 @@ namespace Anubis.Web.Endpoints.Authentication
 
         public override async Task HandleAsync(RegisterRequest req, CancellationToken ct)
         {
-            await SendAsync(await _dispatcher.Dispatch<RegisterRequest, RegisterResponse>(req, ct));
+            try
+            {
+                await SendAsync(await _dispatcher.Dispatch<RegisterRequest, RegisterResponse>(req, ct));
+            }
+            catch (Exception ex)
+            {
+                ThrowError("Invalid register", StatusCodes.Status400BadRequest);
+                _logger.Error(ex.Message);
+            }
         }
     }
 }

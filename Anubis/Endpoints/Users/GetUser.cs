@@ -21,7 +21,14 @@ public class GetUser : EndpointWithoutRequest
 
     public override async Task HandleAsync(CancellationToken c)
     {
-        var req = new GetUserRequest(){UserID = Route<string>("UserID")};
-        await SendAsync(await _dispatcher.Dispatch<GetUserRequest, GetUserResponse>(req, c));
+        try
+        {
+            var req = new GetUserRequest() { UserID = Route<string>("UserID") };
+            await SendAsync(await _dispatcher.Dispatch<GetUserRequest, GetUserResponse>(req, c));
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+        }
     }
 }

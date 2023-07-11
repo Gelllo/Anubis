@@ -24,7 +24,14 @@ namespace Anubis.Web.Endpoints.Users
 
         public override async Task HandleAsync(CreateUserRequest req, CancellationToken ct)
         {
-            await SendAsync(await _dispatcher.Dispatch<CreateUserRequest, CreateUserResponse>(req, ct));
+            try
+            {
+                await SendAsync(await _dispatcher.Dispatch<CreateUserRequest, CreateUserResponse>(req, ct));
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+            }
         }
     }
 }

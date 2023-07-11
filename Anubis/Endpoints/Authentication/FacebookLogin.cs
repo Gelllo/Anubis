@@ -3,6 +3,7 @@ using Anubis.Application.Responses.Login;
 using Anubis.Application.Services;
 using Anubis.Application;
 using Anubis.Infrastructure;
+using Anubis.Web.Shared;
 using FastEndpoints;
 using Newtonsoft.Json;
 
@@ -45,11 +46,12 @@ namespace Anubis.Web.Endpoints.Authentication
 
                 await _webSecurityService.SetRefreshToken(HttpContext, refreshToken, user);
 
-                await SendAsync(loginResponse, 200, ct);
+                await SendAsync(loginResponse, StatusCodes.Status200OK);
             }
             catch (Exception ex)
             {
                 _logger.Error(ex.Message);
+                ThrowError(ErrorMessages.INVALID_CREDENTIALS, StatusCodes.Status401Unauthorized);
             }
         }
     }
